@@ -19,7 +19,7 @@ Deploying a React project with a Python backend can be streamlined with a well-d
 
 | Environment     | Branch Name      | Type   | Purpose                             |
 |-----------------|-----------|--------|----------------------------------|
-| **Development** | `<developer>` | red | make tests, fixes, and new features |
+| **Development** | `<your name>` | red | make tests, fixes, and new features |
 |                 | feature   | green  | incorporate working features. integration test locally |
 | **Production**  | main   | red    | live testing |
 |                 | main (tagged) | green  | released to public live. tagged historical stable version releases of the main branch|
