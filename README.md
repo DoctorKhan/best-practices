@@ -3,8 +3,8 @@
 ### Priorities
 1. The production server should be up and running at all times
 2. New versions are fully tested before deploying to production server
-3. Read rule #1
-4. You must push daily incremental commits
+3. You must push daily incremental commits
+4. Read rule #1
 
 ### Transparency
 
