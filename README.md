@@ -4,7 +4,8 @@
 1. The production server should be up and running at all times
 2. New versions are fully tested before deploying to production server
 3. You must push daily incremental commits
-4. Read rule #1
+4. Always write unit tests
+5. Read rule #1
 
 ### Transparency
 
