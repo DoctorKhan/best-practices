@@ -63,6 +63,74 @@ Deploying a React project with a Python backend can be streamlined with a well-d
       - Deploy the released version to the production server.
       - Monitor the deployment for any issues.
 
+### Communication
+
+- Increase points of contact, checks, audits, milestones, and roadmaps. 
+- Reduce unstructured meetings.
+
+### General Rules
+
+1. Write clean, readable, well-commented code.
+2. Use version control systems (e.g., Git).
+3. Follow consistent coding styles and naming conventions.
+4. Break down complex problems.
+5. Conduct code reviews.
+6. Write unit tests.
+7. Practice CI/CD.
+8. Optimize performance.
+9. Document code, APIs, and architectures.
+10. Choose appropriate tools and frameworks.
+11. Design for scalability, security, and maintainability.
+12. Regularly refactor code.
+13. Communicate effectively.
+14. Stay updated with industry trends.
+15. Follow agile methodologies.
+16. Seek help immediately when blocked.
+
+## Two Environments
+
+### Development Environment
+
+Each environment has a different configuration, build, and environment variables, typically stored in a `.env` file. They may also exist on different machines.
+
+1. **Machines:**
+   - **Development Machine:** Your local machine for running unit tests, local deployments, and integration tests.
+   - **Staging Machine:** Can be same as production machine, just different ports.
+   - **Production Machine:** 
+
+3. **Best Practices:**
+   - Commit frequently to the red branch, indicating work progress.
+   - Squash and merge commits to the green branch once unit tests pass.
+
+### Production Environment
+
+2. **Machines:**
+   - **Staging Machine:** Identical to the production server, used for testing before deploying to production. May go down periodically for testing.
+   - **Production Machine:** Always up, running the main branch. Monitored for uptime, bandwidth, and resource usage.
+
+3. **Deployment Process:**
+   - **Main Branch:** Deployed to the staging machine. Once it passes all tests, merge and deploy to the production machine.
+   - **Release Branch:** Use pull requests for deploying stable versions.
+
+### Availability and Stability
+
+1. **Production Server:** Must be stable and continuously monitored for high uptime.
+2. **Staging Server:** Used for final testing, can experience downtime for testing purposes.
+
+### Test Driven Development (TDD)
+
+1. Write a failing test (red), commit to red branch.
+2. Write code until the test passes (green), merge to green branch.
+3. Commit and merge code to the next branch as appropriate.
+4. Include UX paths (golden, happy, sad, bad) if time allows.
+
+### Tools
+
+- Use tools like SCP, rsync, Heroku, GitHub Actions, Puppet, or other DevOps systems for continuous deployment.
+- Periodically commit to GitHub using Colab: [YouTube Guide](https://www.youtube.com/watch?v=uBY06NpnLcs).
+
+By maintaining clear separation and management of the development and production environments, adhering to best practices, and utilizing effective tools, the team can ensure a stable, efficient, and transparent workflow.
+
 ### Deployment Tools and CI/CD Integration
 
 1. **Continuous Integration (CI):**
@@ -187,70 +255,3 @@ jobs:
 ```
 
 By following this structure and utilizing CI/CD tools, you can ensure a smooth and reliable deployment process for your React frontend and Python backend applications.
-### Communication
-
-- Increase points of contact, checks, audits, milestones, and roadmaps. 
-- Reduce unstructured meetings.
-
-### General Rules
-
-1. Write clean, readable, well-commented code.
-2. Use version control systems (e.g., Git).
-3. Follow consistent coding styles and naming conventions.
-4. Break down complex problems.
-5. Conduct code reviews.
-6. Write unit tests.
-7. Practice CI/CD.
-8. Optimize performance.
-9. Document code, APIs, and architectures.
-10. Choose appropriate tools and frameworks.
-11. Design for scalability, security, and maintainability.
-12. Regularly refactor code.
-13. Communicate effectively.
-14. Stay updated with industry trends.
-15. Follow agile methodologies.
-16. Seek help immediately when blocked.
-
-## Two Environments
-
-### Development Environment
-
-Each environment has a different configuration, build, and environment variables, typically stored in a `.env` file. They may also exist on different machines.
-
-1. **Machines:**
-   - **Development Machine:** Your local machine for running unit tests, local deployments, and integration tests.
-   - **Staging Machine:** Can be same as production machine, just different ports.
-   - **Production Machine:** 
-
-3. **Best Practices:**
-   - Commit frequently to the red branch, indicating work progress.
-   - Squash and merge commits to the green branch once unit tests pass.
-
-### Production Environment
-
-2. **Machines:**
-   - **Staging Machine:** Identical to the production server, used for testing before deploying to production. May go down periodically for testing.
-   - **Production Machine:** Always up, running the main branch. Monitored for uptime, bandwidth, and resource usage.
-
-3. **Deployment Process:**
-   - **Main Branch:** Deployed to the staging machine. Once it passes all tests, merge and deploy to the production machine.
-   - **Release Branch:** Use pull requests for deploying stable versions.
-
-### Availability and Stability
-
-1. **Production Server:** Must be stable and continuously monitored for high uptime.
-2. **Staging Server:** Used for final testing, can experience downtime for testing purposes.
-
-### Test Driven Development (TDD)
-
-1. Write a failing test (red), commit to red branch.
-2. Write code until the test passes (green), merge to green branch.
-3. Commit and merge code to the next branch as appropriate.
-4. Include UX paths (golden, happy, sad, bad) if time allows.
-
-### Tools
-
-- Use tools like SCP, rsync, Heroku, GitHub Actions, Puppet, or other DevOps systems for continuous deployment.
-- Periodically commit to GitHub using Colab: [YouTube Guide](https://www.youtube.com/watch?v=uBY06NpnLcs).
-
-By maintaining clear separation and management of the development and production environments, adhering to best practices, and utilizing effective tools, the team can ensure a stable, efficient, and transparent workflow.
