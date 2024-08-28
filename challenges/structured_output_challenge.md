@@ -6,10 +6,11 @@ Develop a GitHub project to explore and implement structured outputs in Large La
 **Key Tasks:**
 
 1. **Project Setup:**
+
    - Create a new GitHub repository.
    - Ensure the repository includes a proper README, outlining the project's goals and implementation steps.
-
 2. **Structured Outputs:**
+
    - Read and understand the challenge of producing structured outputs in LLMs as described in the OpenAI article [Introducing Structured Outputs in the API](https://openai.com/index/introducing-structured-outputs-in-the-api/).
    - Implement a model that outputs structured data for a mindfulness meditation script. The output should follow the structure below:
      ```python
@@ -30,16 +31,18 @@ Develop a GitHub project to explore and implement structured outputs in Large La
          ]
      }
      ```
-
 3. **Implementation Details:**
+
    - Use **Pydantic models**.
    - Implement unit testing to validate the structure and correctness of the output.
    - Include error handling and refusal mechanisms for inputs that cannot be processed into structured outputs.
-
 4. **Repository Management:**
+
    - Create a separate branch for development and merge into the main branch after code review.
    - Follow best practices in coding, documentation, and testing.
    - Ensure all updates are documented in the GitHub repository, including any changes made to the models or structure.
 
 **Final Deliverable:**
+
 - A well-documented GitHub repository containing the code, README, and unit tests that successfully generate structured outputs for mindfulness meditations.
+- Be sure to study the [best practices guide](https://github.com/DoctorKhan/best-practices/blob/main/README.md "study this guide") and be prepared to answer questions about it.
