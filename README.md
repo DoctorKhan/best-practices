@@ -39,8 +39,8 @@ Deploying a React project with a Python backend can be streamlined with a well-d
     - **Branch: feature**
     - **Purpose:** Incorporate working features and perform local integration tests.
     - **Action:** 
-      - Once features are complete, create a pull request (PR) from the individual feature branch to the `feature` branch.
-      - Review, merge, and test integrated features locally.
+      - Once features are complete, merge from `feature` branch to your branch.
+      - Review and test integrated features locally. Then merge from your branch to the `feature` branch
       - Ensure both frontend and backend work together seamlessly by running integration tests locally.
 
 3. **Staging Deployment:**
