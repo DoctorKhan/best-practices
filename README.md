@@ -1,6 +1,7 @@
 ## Best Practices
 
 ### Priorities
+
 1. The production server should be up and running at all times
 2. New versions are fully tested before deploying to production server
 3. You must push daily incremental commits
@@ -19,53 +20,60 @@ Engineers should commit frequently and push code daily, especially for teams in 
 
 Deploying a React project with a Python backend can be streamlined with a well-defined branching and deployment strategy.
 
-| Environment     | Branch Name      | Type   | Purpose                             |
-|-----------------|-----------|--------|----------------------------------|
-| **Development** | `<your name>` | red | make tests, fixes, and new features |
-|                 | feature   | green  | incorporate working features. integration test locally |
-| **Production**  | main   | red    | live testing |
-|                 | main (tagged) | green  | released to public live. tagged historical stable version releases of the main branch|
+| Environment           | Branch Name     | Type  | Purpose                                                                               |
+| --------------------- | --------------- | ----- | ------------------------------------------------------------------------------------- |
+| **Development** | `<your name>` | red   | make tests, fixes, and new features                                                   |
+|                       | feature         | green | incorporate working features. integration test locally                                |
+| **Production**  | main            | red   | live testing                                                                          |
+|                       | main (tagged)   | green | released to public live. tagged historical stable version releases of the main branch |
+
+1. Create your own brain from `feature` branch.
+   ```shell
+   git switch feature
+   git switch -c <your name>
+   ```
 
 ### Steps for Deployment
 
 1. **Local Development:**
-    - **Branch: developer-name**
-    - **Purpose:** Individual development work, making tests, fixes, and new features.
-    - **Action:** 
-      - Each developer works on their own feature branch off `developer-name`.
-      - Commit frequently and push to the `developer-name` branch.
 
+   - **Branch: developer-name**
+   - **Purpose:** Individual development work, making tests, fixes, and new features.
+   - **Action:**
+     - Each developer works on their own feature branch off `developer-name`.
+     - Commit frequently and push to the `developer-name` branch.
 2. **Feature Integration:**
-    - **Branch: feature**
-    - **Purpose:** Incorporate working features and perform local integration tests.
-    - **Action:** 
-      - Once features are complete, create a pull request (PR) from the individual feature branch to the `feature` branch.
-      - Review, merge, and test integrated features locally.
-      - Ensure both frontend and backend work together seamlessly by running integration tests locally.
 
+   - **Branch: feature**
+   - **Purpose:** Incorporate working features and perform local integration tests.
+   - **Action:**
+     - Once features are complete, create a pull request (PR) from the individual feature branch to the `feature` branch.
+     - Review, merge, and test integrated features locally.
+     - Ensure both frontend and backend work together seamlessly by running integration tests locally.
 3. **Staging Deployment:**
-    - **Branch: main**
-    - **Purpose:** Live testing environment.
-    - **Action:** 
-      - After successful local testing, create a PR from the `feature` branch to the `main` branch.
-      - Merge the PR after approval.
-      - Deploy the `main` branch to the staging server.
-      - Perform live testing to ensure everything works as expected in a production-like environment.
 
+   - **Branch: main**
+   - **Purpose:** Live testing environment.
+   - **Action:**
+     - After successful local testing, create a PR from the `feature` branch to the `main` branch.
+     - Merge the PR after approval.
+     - Deploy the `main` branch to the staging server.
+     - Perform live testing to ensure everything works as expected in a production-like environment.
 4. **Production Deployment:**
-    - **Branch: main (tagged)**
-    - **Purpose:** Release the application to the public.
-    - **Action:** 
-      - Once a version is deemed stable and is running smoothly in staging, create a tag from the `main` branch.
-      - The tag represents a specific release version (e.g., `v1.0.0`).
-      - Save as a draft.
-      - After approval, your manager will publish the release.
-      - Deploy the released version to the production server.
-      - Monitor the deployment for any issues.
+
+   - **Branch: main (tagged)**
+   - **Purpose:** Release the application to the public.
+   - **Action:**
+     - Once a version is deemed stable and is running smoothly in staging, create a tag from the `main` branch.
+     - The tag represents a specific release version (e.g., `v1.0.0`).
+     - Save as a draft.
+     - After approval, your manager will publish the release.
+     - Deploy the released version to the production server.
+     - Monitor the deployment for any issues.
 
 ### Communication
 
-- Increase points of contact, checks, audits, milestones, and roadmaps. 
+- Increase points of contact, checks, audits, milestones, and roadmaps.
 - Reduce unstructured meetings.
 
 ### General Rules
@@ -94,21 +102,23 @@ Deploying a React project with a Python backend can be streamlined with a well-d
 Each environment has a different configuration, build, and environment variables, typically stored in a `.env` file. They may also exist on different machines.
 
 1. **Machines:**
+
    - **Development Machine:** Your local machine for running unit tests, local deployments, and integration tests.
    - **Staging Machine:** Can be same as production machine, just different ports.
-   - **Production Machine:** 
+   - **Production Machine:**
+2. **Best Practices:**
 
-3. **Best Practices:**
    - Commit frequently to the red branch, indicating work progress.
    - Squash and merge commits to the green branch once unit tests pass.
 
 ### Production Environment
 
 2. **Machines:**
+
    - **Staging Machine:** Identical to the production server, used for testing before deploying to production. May go down periodically for testing.
    - **Production Machine:** Always up, running the main branch. Monitored for uptime, bandwidth, and resource usage.
-
 3. **Deployment Process:**
+
    - **Main Branch:** Deployed to the staging machine. Once it passes all tests, merge and deploy to the production machine.
    - **Release Branch:** Use pull requests for deploying stable versions.
 
@@ -134,18 +144,20 @@ By maintaining clear separation and management of the development and production
 ### Deployment Tools and CI/CD Integration
 
 1. **Continuous Integration (CI):**
-    - Use tools like GitHub Actions, GitLab CI, CircleCI, or Jenkins to automate the build, test, and deployment process.
-    - Set up CI pipelines to automatically run tests on every push to `developer` and `feature` branches.
 
+   - Use tools like GitHub Actions, GitLab CI, CircleCI, or Jenkins to automate the build, test, and deployment process.
+   - Set up CI pipelines to automatically run tests on every push to `developer` and `feature` branches.
 2. **Continuous Deployment (CD):**
-    - Use tools like Docker, Kubernetes, or Heroku to streamline the deployment process.
-    - Configure your CI/CD pipelines to automatically deploy the `main` branch to the staging server and the `main` (tagged) branch to the production server.
+
+   - Use tools like Docker, Kubernetes, or Heroku to streamline the deployment process.
+   - Configure your CI/CD pipelines to automatically deploy the `main` branch to the staging server and the `main` (tagged) branch to the production server.
 
 ### Example CI/CD Pipeline Configuration
 
 #### GitHub Actions Example
 
 **Workflow for `feature` branch:**
+
 ```yaml
 name: CI for Feature Branch
 
@@ -209,6 +221,7 @@ jobs:
 ```
 
 **Workflow for `staging` branch:**
+
 ```yaml
 name: Deploy to Staging
 
@@ -232,6 +245,7 @@ jobs:
 ```
 
 **Workflow for `main` branch:**
+
 ```yaml
 name: Deploy to Production
 
@@ -255,3 +269,8 @@ jobs:
 ```
 
 By following this structure and utilizing CI/CD tools, you can ensure a smooth and reliable deployment process for your React frontend and Python backend applications.
+
+External Links:
+
+- [GitHub Actions Documentation](https://docs.github.com/en/actions)
+- [More git commands](https://sourcelevel.io/blog/mastering-git-the-lesser-known-commands-you-could-be-using-or-not#:~:text=If%20you've%20ever%20felt,the%20chances%20of%20unintentional%20changes.)
