@@ -22,16 +22,10 @@ Deploying a React project with a Python backend can be streamlined with a well-d
 
 | Environment           | Branch Name     | Type  | Purpose                                                                               |
 | --------------------- | --------------- | ----- | ------------------------------------------------------------------------------------- |
-| **Development** | `<your name>` | red   | make tests, fixes, and new features                                                   |
+| **Development** | `<your-name>` | red   | make tests, fixes, and new features                                                   |
 |                       | feature         | green | incorporate working features. integration test locally                                |
 | **Production**  | main            | red   | live testing                                                                          |
 |                       | main (tagged)   | green | released to public live. tagged historical stable version releases of the main branch |
-
-1. Create your own brain from `feature` branch.
-   ```shell
-   git switch feature
-   git switch -c <your name>
-   ```
 
 ### Steps for Deployment
 
@@ -40,22 +34,27 @@ Deploying a React project with a Python backend can be streamlined with a well-d
    - **Branch: developer-name**
    - **Purpose:** Individual development work, making tests, fixes, and new features.
    - **Action:**
-     - Each developer works on their own feature branch off `developer-name`.
-     - Commit frequently and push to the `developer-name` branch.
+     - Each developer works on their own developer branch `<your-name>`.
+     - Create your own branch from `feature` branch, if necessary
+        ```shell
+        git switch feature
+        git switch -c <your-name>
+        ```
+     - Commit frequently and push to the `<your-name>` branch.
+     - Merge from `feature` branch frequetly to incorporate features from other developers:
+       ```shell
+       	git merge feature
+       ```
+    - Review and test integrated features locally.
+
 2. **Feature Integration:**
-    - **Branch: feature**
-    - **Purpose:** Incorporate working features and perform local integration tests.
-    - **Action:** 
-      - Once features are complete, merge from `feature` branch to your branch.
-      - Review and test integrated features locally. Then merge from your branch to the `feature` branch
-      - Ensure both frontend and backend work together seamlessly by running integration tests locally.
 
    - **Branch: feature**
    - **Purpose:** Incorporate working features and perform local integration tests.
    - **Action:**
-     - Once features are complete, create a pull request (PR) from the individual feature branch to the `feature` branch.
-     - Review, merge, and test integrated features locally.
-     - Ensure both frontend and backend work together seamlessly by running integration tests locally.
+     - Once features are complete, run integration tests locally to ensure both frontend and backend work together seamlessly by .
+     - Merge from your branch to the `feature` branch.
+
 3. **Staging Deployment:**
 
    - **Branch: main**
@@ -65,6 +64,7 @@ Deploying a React project with a Python backend can be streamlined with a well-d
      - Merge the PR after approval.
      - Deploy the `main` branch to the staging server.
      - Perform live testing to ensure everything works as expected in a production-like environment.
+
 4. **Production Deployment:**
 
    - **Branch: main (tagged)**
