@@ -1,5 +1,7 @@
 ## Best Practices
 
+Read this document often. It will be updated.
+
 ### Priorities
 
 1. The production server should be up and running at all times
