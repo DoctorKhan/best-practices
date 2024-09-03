@@ -36,17 +36,16 @@ Deploying a React project with a Python backend can be streamlined with a well-d
    - **Action:**
      - Each developer works on their own developer branch `<your-name>`.
      - Create your own branch from `feature` branch, if necessary
-        ```shell
-        git switch feature
-        git switch -c <your-name>
-        ```
+       ```shell
+       git switch feature
+       git switch -c <your-name>
+       ```
      - Commit frequently and push to the `<your-name>` branch.
      - Merge from `feature` branch frequetly to incorporate features from other developers:
        ```shell
        	git merge feature
        ```
-    - Review and test integrated features locally.
-
+   - Review and test integrated features locally.
 2. **Feature Integration:**
 
    - **Branch: feature**
@@ -54,7 +53,6 @@ Deploying a React project with a Python backend can be streamlined with a well-d
    - **Action:**
      - Once features are complete, run integration tests locally to ensure both frontend and backend work together seamlessly by .
      - Merge from your branch to the `feature` branch.
-
 3. **Staging Deployment:**
 
    - **Branch: main**
@@ -64,7 +62,6 @@ Deploying a React project with a Python backend can be streamlined with a well-d
      - Merge the PR after approval.
      - Deploy the `main` branch to the staging server.
      - Perform live testing to ensure everything works as expected in a production-like environment.
-
 4. **Production Deployment:**
 
    - **Branch: main (tagged)**
@@ -115,6 +112,11 @@ Each environment has a different configuration, build, and environment variables
 2. **Best Practices:**
 
    - Commit frequently to the red branch, indicating work progress.
+   - If you have no code to commit, then make a note in `logbook.md` such as
+     - | Name | Task | Reviewed by |
+       | ---- | ---- | ----------- |
+       |      |      |             |
+       |      |      |             |
    - Squash and merge commits to the green branch once unit tests pass.
 
 ### Production Environment
