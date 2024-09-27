@@ -6,9 +6,10 @@ Read this document often. It will be updated.
 
 1. The production server should be up and running at all times
 2. New versions are fully tested before deploying to production server
-3. You must push daily incremental commits
-4. Always write unit tests
-5. Read rule #1
+3. You must push daily incremental commits to a local branch
+4. You must merge down from feature branch to your user branch daily
+5. Always write unit tests
+6. Read rule #1
 
 ### Transparency
 
