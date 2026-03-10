@@ -1,174 +1,225 @@
-## Best Practices & Workflow
+## Engineering Practices
 
-Read this document often. It will be updated.
+This repository documents practical engineering conventions for day-to-day development work. It should stay short, current, and easy to apply.
 
-### Core Branching Philosophy: Protect the Source of Truth
+### Core Principles
 
-The entire branching strategy is built on one core principle: **branches that are shared or deployed must always be stable and working.**
-
-  * **Protecting `main` and `develop`:** Your `main` (production) and `develop` (integration) branches are the "sources of truth." Committing broken code to them blocks the entire team.
-  * **Feature Branches as a "Sandbox":** Branches prefixed with `feature/` (e.g., `feature/login-page`) are your private "sandboxes." This is the *only* place where it is safe to have broken, half-finished code.
-  * **The Rule:** The rule "only working code should be committed" applies *only* when merging into a shared branch (like `develop` or `main`). Your working branches are expected to be work-in-progress.
-
------
-
-### Priorities
-
-1.  The production server should be up and running at all times (Protected `main (tagged)`).
-2.  New versions are fully tested in the staging environment (`main` branch).
-3.  The integration branch (`develop`) must remain Green (passing tests) so teammates can rely on it.
-4.  You must push daily incremental commits to your local working branch (`feature/*`).
-5.  Always write unit tests.
+1. `main` should always be in a deployable state.
+2. Changes should be small, reviewable, and easy to roll back.
+3. CI is required for shared branches and pull requests.
+4. Test-driven development is preferred especially when behavior is unclear, risky, or being implemented with AI assistance.
+5. Incomplete work should be hidden behind feature flags, not long-lived branches.
+6. Automated tests should exist at the right level for the risk: unit, integration, and end-to-end where appropriate.
 
 -----
 
-### Branch Naming Conventions (Prefixes)
+### Preferred Branching Model
 
-We use semantic prefixes to identify the purpose of a branch. Do not use random names.
+Use a trunk-based workflow by default.
 
-| Prefix | Example | Type | Purpose |
-| :--- | :--- | :--- | :--- |
-| `feature/` | `feature/user-auth` | Red | A new functionality. Starts broken/WIP, must be Green before merging to `develop`. |
-| `bugfix/` | `bugfix/header-logo` | Red | Fixing a non-critical bug found in `develop`. |
-| `hotfix/` | `hotfix/db-crash` | Red | Urgent. Used to patch Production (`main`) immediately, skipping normal flow. |
-| `users/` | `users/jdoe/sandbox` | Red | Optional. A pure experimental sandbox for a specific developer. |
+| Branch | Purpose | Rules |
+| :--- | :--- | :--- |
+| `main` | Source of truth. Always production-ready. | Protected. Requires passing CI and review before merge. |
+| `release/<version>` | Optional short-lived stabilization branch for a scheduled release. | Created only when needed. Deleted after release. |
+| `feat/<name>` | New user-facing functionality. | Short-lived. Rebased or merged frequently from `main`. |
+| `fix/<name>` | Bug fix that is not an emergency. | Short-lived. Must include tests when practical. |
+| `hotfix/<name>` | Urgent production repair. | Branch from `main`, fast review, merge back quickly. |
+| `docs/<name>` | Documentation-only changes. | Keep small and easy to review. |
+| `chore/<name>` | Tooling, maintenance, dependency, or config changes. | Prefer isolated, low-risk changes. |
+| `refactor/<name>` | Structural code improvement with no intended behavior change. | Should be supported by tests. |
 
------
-
-### Branch Structure
-
-| Environment | Branch Name | Type | Purpose |
-| :--- | :--- | :--- | :--- |
-| **Work In Progress** | `feature/<name>` | Red | Develop specific tasks, tests, and fixes. This is your "sandbox." |
-| **Development** | `develop` | Green | The shared integration branch. Accumulates features from all developers. |
-| **Staging** | `main` | Red* | Live testing (Staging Environment). Red only during active deployment testing. |
-| **Production** | `main (tagged)` | Green | Released to public. Tagged historical stable versions (e.g., `v1.0.0`). |
+Do not keep a permanent `develop` branch unless the team has a concrete release-management reason for it. For most teams, a permanently deployable `main` branch is simpler and more reliable.
 
 -----
 
-### Steps for Deployment
+### Branch Naming
 
-1.  **Local Development:**
-      * **Branch: `feature/<task-name>`**
-      * **Purpose:** Individual development work.
-      * **Action:**
-          * Create a specific branch for your task from `develop`:
-            ```shell
-            git switch develop
-            git pull
-            git switch -c feature/my-new-task
-            ```
-          * Commit frequently and push to your feature branch.
-          * **Syncing:** Merge `develop` into your branch frequently to resolve conflicts early:
-            ```shell
-            git merge develop
-            ```
-      * Review and test locally.
-2.  **Feature Integration:**
-      * **Branch: `develop`**
-      * **Purpose:** Incorporate working features and perform local integration tests.
-      * **Action:**
-          * **Green Check:** Do not merge your branch into `develop` until you have ensured that all tests pass in your feature branch.
-          * Create a Pull Request (PR) or merge `feature/my-new-task` into `develop`.
-          * Once merged, the `develop` branch should auto-deploy to a Development/QA server (if available) or run CI tests.
-3.  **Staging Deployment:**
-      * **Branch: `main`**
-      * **Purpose:** Live testing environment.
-      * **Action:**
-          * Create a PR from `develop` to `main`.
-          * Merge the PR after approval.
-          * Deploy `main` to the staging server.
-          * Perform live testing.
-4.  **Production Deployment:**
-      * **Branch: `main (tagged)`**
-      * **Purpose:** Release to the public.
-      * **Action:**
-          * Once `main` is stable in staging, create a tag (e.g., `v1.0.0`).
-          * Save as a draft.
-          * After approval, publish the release.
-          * Deploy the released version to the production server.
+Prefer concise, descriptive branch names:
+
+- `feat/user-auth`
+- `fix/header-overflow`
+- `chore/update-eslint`
+- `docs/api-pagination`
+- `refactor/payment-service`
+- `hotfix/login-outage`
+
+Avoid generic names such as `test`, `my-branch`, `updates`, or user-specific sandbox branches unless there is a clear temporary need.
 
 -----
 
-### General Rules
+### Daily Workflow
 
-1.  Write clean, readable, well-commented code.
-2.  Use version control systems (e.g., Git).
-3.  Follow consistent coding styles.
-4.  Write unit tests.
-5.  Practice CI/CD.
-6.  Communicate effectively.
-7.  Seek help immediately when blocked.
+1. Start from the latest `main`.
+   ```shell
+   git switch main
+   git pull
+   git switch -c feat/my-change
+   ```
+2. Make small commits with clear intent.
+3. Rebase or merge from `main` regularly if the branch lives longer than a day or two.
+4. Run relevant tests locally before opening a pull request.
+5. Open a PR early if feedback is useful, but do not merge until required checks pass.
+6. Merge to `main` only when the change is reviewable, tested, and safe to deploy.
+
+Prefer short-lived branches. If work is not ready for users but needs to merge, use feature flags, configuration gates, or dark launches.
 
 -----
 
-### CI/CD Pipeline Configuration Examples
+### Test-Driven Development
 
-#### GitHub Actions Example
+TDD is not mandatory for every change, but it is the preferred default when:
 
-**Workflow for `feature/*` branches (The Sandbox):**
+1. The expected behavior can be stated clearly before implementation.
+2. The change affects business rules, parsing, state transitions, or bug fixes.
+3. AI is being used to generate or refactor code and you want fast validation of correctness.
+
+Recommended loop:
+
+1. Write or update a failing test that captures the intended behavior.
+2. Implement the smallest change needed to make the test pass.
+3. Refactor while keeping the test suite green.
+
+Why this matters for AI-assisted coding:
+
+1. Tests constrain the solution space and reduce vague prompts.
+2. Failing tests make regressions visible immediately.
+3. Passing tests provide a concrete acceptance check for generated code.
+4. Small test-first steps reduce the risk of large, plausible-looking but incorrect changes.
+
+Do not force TDD where it adds little value, such as trivial presentation changes or exploratory prototyping. But when the cost of wrong behavior is meaningful, a test-first workflow is usually the safest and fastest path.
+
+-----
+
+### Pull Request Standards
+
+Every pull request should:
+
+1. Be scoped to one logical change.
+2. Explain the user or system impact.
+3. Include tests or explain why tests were not added.
+4. Pass all required CI checks.
+5. Be small enough for a reviewer to understand without excessive context switching.
+
+Reviewers should focus on correctness, risk, maintainability, and test coverage, not only style.
+
+-----
+
+### Deployment Model
+
+Branch names and environments should not be conflated.
+
+Use this separation instead:
+
+| Concept | Example |
+| :--- | :--- |
+| Branch | `main` |
+| Release branch | `release/2026-03` or `release/1.4.0` |
+| Tag | `v1.4.0` |
+| Environment | `dev`, `staging`, `prod` |
+
+Recommended flow:
+
+1. Merge reviewed changes into `main`.
+2. Deploy `main` automatically to a non-production environment if useful.
+3. Validate in `staging`.
+4. Tag the release commit as `vX.Y.Z`.
+5. Deploy that tagged commit to production.
+
+This keeps release history immutable and makes rollback much clearer.
+
+-----
+
+### CI/CD Expectations
+
+CI should be mandatory for pull requests and protected branches.
+
+Minimum expectations:
+
+1. Install dependencies in a reproducible way.
+2. Run linting, type checks, and automated tests.
+3. Build the application if it produces deployable artifacts.
+4. Block merges when required checks fail.
+5. Deploy from a known commit, ideally the same one that was validated in CI.
+
+Example GitHub Actions workflow:
 
 ```yaml
-name: CI for Feature Branches
+name: CI
+
 on:
-  push:
-    branches:
-      - 'feature/**'  # Triggers on any branch starting with feature/
-      - 'bugfix/**'
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Run Tests
-        run: |
-           npm install
-           npm test
-```
-
-**Workflow for `develop` branch (Integration):**
-
-```yaml
-name: CI for Develop
-on:
-  push:
-    branches:
-      - develop
-
-jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Run Integration Tests
-        run: |
-           npm test
-           # Optional: Deploy to internal Dev server
-```
-
-**Workflow for `main` branch (Staging):**
-
-```yaml
-name: Deploy to Staging
-on:
+  pull_request:
   push:
     branches:
       - main
 
 jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint --if-present
+      - run: npm run typecheck --if-present
+      - run: npm test --if-present
+      - run: npm run build --if-present
+```
+
+Example release workflow:
+
+```yaml
+name: Deploy
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Deploy to Staging Server
-        run: |
-          ssh user@staging-server 'git pull origin main && docker-compose up -d --build'
+      - uses: actions/checkout@v4
+      - name: Deploy tagged release
+        run: ./scripts/deploy-production.sh
 ```
 
 -----
 
-### Communication
+### Testing Guidance
 
-  * **Red Branches (`feature/`):** It is okay if these fail in CI.
-  * **Green Branches (`develop`, `main`):** These must never fail in CI. If `develop` breaks, no one can merge their work. Fixing `develop` becomes the top priority.
+Testing strategy should match risk and feedback speed.
+
+| Test Type | Best For |
+| :--- | :--- |
+| Unit tests | Pure logic, small components, edge cases |
+| Integration tests | Database, API, queue, filesystem, and service boundaries |
+| End-to-end tests | Critical user journeys and release confidence |
+
+Do not optimize for unit-test count alone. Optimize for confidence per minute of maintenance cost.
+
+When practical, start with the test before the implementation. This is especially useful for AI-assisted code generation, where tests act as an executable specification and a regression boundary.
+
+-----
+
+### Communication Rules
+
+1. Shared branches must stay healthy. If `main` breaks, fixing it becomes the top priority.
+2. Raise blockers early instead of waiting until a deadline.
+3. Prefer written decisions in PRs, issues, or design notes so tradeoffs are visible later.
+4. When behavior changes, document the operational impact, migration needs, and rollback path.
+
+-----
+
+### General Engineering Standards
+
+1. Write code that is easy to read, change, and delete.
+2. Prefer explicit names over clever abstractions.
+3. Keep dependencies current, but upgrade deliberately.
+4. Use formatting and linting tools to automate consistency.
+5. Treat observability as part of the feature: logs, metrics, traces, alerts.
+6. Design for failure: retries, timeouts, idempotency, and rollback should be intentional.
+7. Default to secure choices for secrets, permissions, and data handling.
